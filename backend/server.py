@@ -35,11 +35,7 @@ async def health_check():
     return {"status": "healthy", "service": "Indian Heritage API"}
 
 # Include all route modules
-api_router.include_router(hero_slides.router)
-api_router.include_router(cultural_categories.router)
-api_router.include_router(regional_highlights.router)
-api_router.include_router(featured_stories.router)
-api_router.include_router(newsletter.router)
+# Route modules temporarily disabled
 
 # Include the router in the main app
 app.include_router(api_router)
