@@ -9,6 +9,16 @@ from pathlib import Path
 # Import database initialization
 from database import init_database, close_db_connection
 
+# Import routes modules
+import sys
+import os
+sys.path.append(os.path.dirname(__file__))
+from routes.hero_slides import router as hero_slides_router
+from routes.cultural_categories import router as cultural_categories_router  
+from routes.regional_highlights import router as regional_highlights_router
+from routes.featured_stories import router as featured_stories_router
+from routes.newsletter import router as newsletter_router
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
