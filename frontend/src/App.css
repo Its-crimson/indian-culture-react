@@ -1,34 +1,303 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* BigFish Design System - Indian Culture Heritage */
+
+/* Core Foundation Colors */
+:root {
+  /* Primary Interface Colors */
+  --color-black: #151515;
+  --color-white: #fff;
+  --color-dark-grey: #717171;
+  --color-mid-grey: #aaa;
+  --color-grey: #b6cbcb;
+  
+  /* Vibrant Brand Colors for Indian Cultural Theme */
+  --color-dark-blue: #1f47e6;
+  --color-mid-blue: #88a2ff;
+  --color-light-blue: #b7fbff;
+  --color-mid-pink: #ff84e4;
+  --color-light-pink: #ffd1e7;
+  --color-mid-purple: #d987ff;
+  --color-mid-yellow: #ffe03d;
+  --color-light-yellow: #f6fd87;
+  --color-dark-orange: #d1903a;
+  --color-mid-orange: #ff965a;
+  --color-dark-green: #a1a500;
+  --color-mid-green: #78d692;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+body {
+  font-family: 'Inter', 'Helvetica', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  color: var(--color-black);
 }
 
-.App-link {
-    color: #61dafb;
+/* Typography System */
+.font-display {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.letter-spacing-wide {
+  letter-spacing: 0.1em;
+}
+
+/* Service Category Buttons - Rounded Tags */
+.service-button {
+  background: var(--color-mid-purple);
+  color: var(--color-black);
+  border: 1px solid var(--color-mid-purple);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.service-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* CTA Buttons - Premium Black Style */
+.cta-button {
+  background: var(--color-black);
+  color: var(--color-white);
+  border: 1px solid var(--color-black);
+  border-radius: 9999px;
+  padding: 0.625rem 1.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.cta-button:hover {
+  background: var(--color-dark-grey);
+  border-color: var(--color-dark-grey);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:active {
+  transform: scale(0.98);
+}
+
+.cta-button.large {
+  padding: 1rem 2rem;
+  font-size: 0.875rem;
+  min-height: 52px;
+}
+
+/* Project Cards - Vibrant Showcase Style */
+.project-card {
+  background: var(--color-light-pink);
+  color: var(--color-black);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 300px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.regional-card {
+  min-height: 400px;
+}
+
+/* Hero Section Styles */
+.hero-section {
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-slider .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Custom Swiper Styles */
+.hero-slider .swiper-pagination {
+  bottom: 2rem !important;
+  z-index: 10;
+}
+
+.hero-slider .swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.5) !important;
+  opacity: 1 !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin: 0 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.hero-slider .swiper-pagination-bullet-active {
+  background: white !important;
+  transform: scale(1.2) !important;
+}
+
+.hero-slider .swiper-button-prev,
+.hero-slider .swiper-button-next {
+  width: 48px !important;
+  height: 48px !important;
+  margin-top: 0 !important;
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-radius: 50% !important;
+  transition: all 0.3s ease !important;
+}
+
+.hero-slider .swiper-button-prev:hover,
+.hero-slider .swiper-button-next:hover {
+  background: rgba(0, 0, 0, 0.6) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Portfolio Grid Layout */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1.5rem 2rem;
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+.grid-item-large {
+  grid-column: span 12;
+}
+
+.grid-item-small {
+  grid-column: span 12;
+}
+
+@media (min-width: 768px) {
+  .grid-item-large {
+    grid-column: span 8;
+  }
+  .grid-item-small {
+    grid-column: span 4;
+  }
+}
+
+@media (min-width: 1024px) {
+  .portfolio-grid {
+    gap: 2rem 2.5rem;
+  }
+}
+
+/* Container System */
+.container {
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Utility Classes */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .hero-section {
+    min-height: 80vh;
+  }
+  
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .project-card {
+    min-height: 280px;
+    padding: 1.25rem;
+  }
+  
+  .regional-card {
+    min-height: 350px;
+  }
+  
+  .font-display {
+    font-size: clamp(2.5rem, 8vw, 4rem) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .project-card:hover {
+    transform: translateY(-6px);
+  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus states for accessibility */
+button:focus,
+.cta-button:focus {
+  outline: 2px solid var(--color-mid-blue);
+  outline-offset: 2px;
+}
+
+/* Loading and transition states */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
