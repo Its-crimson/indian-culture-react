@@ -6,9 +6,6 @@ import os
 import logging
 from pathlib import Path
 
-# Import routes
-from routes import hero_slides, cultural_categories, regional_highlights, featured_stories, newsletter
-
 # Import database initialization
 from database import init_database, close_db_connection
 
