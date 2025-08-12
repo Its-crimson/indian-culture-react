@@ -5,60 +5,50 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field
-from typing import List
-import uuid
-from datetime import datetime
 
+# Import routes
+from routes import hero_slides, cultural_categories, regional_highlights, featured_stories, newsletter
+
+# Import database initialization
+from database import init_database, close_db_connection
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
-mongo_url = os.environ['MONGO_URL']
-client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
-
-# Create the main app without a prefix
-app = FastAPI()
+# Create the main app
+app = FastAPI(
+    title="Indian Heritage Cultural Website API",
+    description="API for managing Indian cultural heritage content",
+    version="1.0.0"
+)
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
-
-# Define Models
-class StatusCheck(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
-
-class StatusCheckCreate(BaseModel):
-    client_name: str
-
-# Add your routes to the router instead of directly to app
+# Health check endpoint
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Indian Heritage Cultural Website API", "status": "running"}
 
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.dict()
-    status_obj = StatusCheck(**status_dict)
-    _ = await db.status_checks.insert_one(status_obj.dict())
-    return status_obj
+@api_router.get("/health")
+async def health_check():
+    return {"status": "healthy", "service": "Indian Heritage API"}
 
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    status_checks = await db.status_checks.find().to_list(1000)
-    return [StatusCheck(**status_check) for status_check in status_checks]
+# Include all route modules
+api_router.include_router(hero_slides.router)
+api_router.include_router(cultural_categories.router)
+api_router.include_router(regional_highlights.router)
+api_router.include_router(featured_stories.router)
+api_router.include_router(newsletter.router)
 
 # Include the router in the main app
 app.include_router(api_router)
 
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -70,6 +60,55 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database with sample data"""
+    logger.info("Starting Indian Heritage Cultural Website API...")
+    try:
+        await init_database()
+        logger.info("Database initialized successfully")
+    except Exception as e:
+        logger.error(f"Error initializing database: {e}")
+
 @app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
+async def shutdown_event():
+    """Close database connection"""
+    logger.info("Shutting down API...")
+    try:
+        await close_db_connection()
+        logger.info("Database connection closed")
+    except Exception as e:
+        logger.error(f"Error closing database connection: {e}")
+
+
+# Additional endpoints for testing
+@api_router.get("/test/all-data")
+async def get_all_test_data():
+    """Get all data for testing purposes"""
+    try:
+        from database import (
+            hero_slides_collection, 
+            cultural_categories_collection,
+            regional_highlights_collection,
+            featured_stories_collection
+        )
+        
+        hero_slides = await hero_slides_collection.find({}).to_list(None)
+        cultural_categories = await cultural_categories_collection.find({}).to_list(None)
+        regional_highlights = await regional_highlights_collection.find({}).to_list(None)
+        featured_stories = await featured_stories_collection.find({}).to_list(None)
+        
+        return {
+            "hero_slides": len(hero_slides),
+            "cultural_categories": len(cultural_categories),
+            "regional_highlights": len(regional_highlights),
+            "featured_stories": len(featured_stories),
+            "status": "success"
+        }
+    except Exception as e:
+        return {"error": str(e), "status": "error"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server:app", host="0.0.0.0", port=8001, reload=True)
