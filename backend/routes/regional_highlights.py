@@ -1,5 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from typing import List
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from models import RegionalHighlight, RegionalHighlightCreate, ApiResponse
 from database import regional_highlights_collection
 from datetime import datetime

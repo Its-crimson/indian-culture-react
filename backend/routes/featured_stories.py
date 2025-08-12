@@ -1,5 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from typing import List
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from models import FeaturedStory, FeaturedStoryCreate, ApiResponse
 from database import featured_stories_collection
 from datetime import datetime
