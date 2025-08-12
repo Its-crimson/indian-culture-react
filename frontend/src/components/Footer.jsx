@@ -1,7 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Heart, Mail, MapPin, Phone } from 'lucide-react';
+import { apiService, handleApiError } from '../services/api';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [subscribeLoading, setSubscribeLoading] = useState(false);
+  const [subscribeMessage, setSubscribeMessage] = useState('');
+
+  const handleNewsletterSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+
+    try {
+      setSubscribeLoading(true);
+      setSubscribeMessage('');
+      await apiService.subscribeNewsletter(email);
+      setSubscribeMessage('Successfully subscribed to newsletter!');
+      setEmail('');
+    } catch (err) {
+      console.error('Error subscribing to newsletter:', err);
+      setSubscribeMessage(handleApiError(err, 'Failed to subscribe to newsletter'));
+    } finally {
+      setSubscribeLoading(false);
+    }
+  };
+
   const culturalLinks = [
     { name: 'Classical Arts', href: '/arts' },
     { name: 'Festivals', href: '/festivals' },
@@ -103,16 +126,28 @@ const Footer = () => {
             <p className="text-mid-grey text-lg mb-6">
               Subscribe to our newsletter for the latest stories, cultural insights, and heritage discoveries.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <form onSubmit={handleNewsletterSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input
                 type="email"
                 placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="flex-1 px-4 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder-mid-grey focus:outline-none focus:border-light-pink focus:bg-white/15 transition-all duration-300"
+                required
               />
-              <button className="cta-button">
-                Subscribe
+              <button 
+                type="submit" 
+                className="cta-button"
+                disabled={subscribeLoading}
+              >
+                {subscribeLoading ? 'Subscribing...' : 'Subscribe'}
               </button>
-            </div>
+            </form>
+            {subscribeMessage && (
+              <p className={`mt-3 text-sm ${subscribeMessage.includes('Successfully') ? 'text-green-400' : 'text-red-400'}`}>
+                {subscribeMessage}
+              </p>
+            )}
           </div>
         </div>
 
